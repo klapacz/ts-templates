@@ -1,0 +1,12 @@
+FROM node:16-alpine
+WORKDIR /app
+
+RUN npm install -g pnpm @antfu/ni
+COPY pnpm-lock.yaml .
+RUN pnpm config set store-dir /store && pnpm fetch
+
+COPY . .
+RUN pnpm install -r --offline
+
+EXPOSE 3000
+CMD [ "nr", "dev", "--host" ]
